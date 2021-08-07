@@ -2,6 +2,7 @@ package org.example;
 
 import io.prometheus.client.Gauge;
 import io.prometheus.client.exporter.HTTPServer;
+import io.prometheus.client.exporter.PushGateway;
 import io.prometheus.client.hotspot.DefaultExports;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ public class SampleService {
 
     private final Random random;
     private final Gauge gauge;
+//    private final PushGateway pushgateway;
     private int currentValue;
 
     /**
@@ -22,6 +24,14 @@ public class SampleService {
 
         // amend a value to the list of exposed values
         gauge = Gauge.build("current_value", "Current Value").register();
+
+        // uncomment the block below for pushgateway
+        /*pushgateway = new PushGateway("127.0.0.1:9091");
+        try {
+            pushgateway.pushAdd(gauge, "abc");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     public static void main(String[] args) {
@@ -55,7 +65,11 @@ public class SampleService {
 
     public void setCurrentValue(int currentValue) {
         this.currentValue = currentValue;
+
+        // update the value for prometheus
         gauge.set(currentValue);
+
+
     }
 
     public int getCurrentValue() {

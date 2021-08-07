@@ -1,0 +1,23 @@
+# prometheus-example
+
+This project contains some sample code to expose internal data of a java application to https://prometheus.io/[prometheus].
+
+## build & run
+
+Just type
+
+[source,shell]
+----
+./gradlew run
+----
+
+This starts link:src/main/java/org/example/SampleService.java[SampleService.java] which runs indefinitely.
+Every 3 secs it picks another random number from 0 to 100 and prints it.
+That value will also be exposed to prometheus
+via a http server on port 1234. In a real life scenario that port will be pulled from a prometheus server actively.
+
+There's also code for using https://github.com/prometheus/pushgateway/blob/master/README.md[Prometheus pushgateway].
+
+NOTE: pushgatway code is commented out by default
+
+
